@@ -100,8 +100,8 @@ There are three frame of references we need to consider:
 The following figure demonstrates these coordinate frames and their origins:
 
 
-![coordinate](Images/Figure-2.png)
 
+<coordinate src="Images/Figure-2.png" width="300" height="300">
 
 Code is provided in map.py for building an initial occupancy map.
 
