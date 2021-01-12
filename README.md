@@ -125,7 +125,9 @@ The vehicle then follows the new path to the goal location.
 
 <!-- USAGE EXAMPLES -->
 ## Usage
+Here's a demo of the simulation:
 
+<img src="Images/demo.mp4" width="500" height="300">
 
 
 
