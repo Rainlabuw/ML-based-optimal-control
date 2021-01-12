@@ -89,6 +89,7 @@ Make sure to load AirportShowcase and hit play before running any code.
 
 ![AirportShowcase](Images/Figure-1.png)
 
+
 ### Building the initial map
 
 There are three frame of references we need to consider:
@@ -96,21 +97,29 @@ There are three frame of references we need to consider:
 2. The moving vehicle coordinate frame (the origin of the airsim's coordinate frame is placed at the position of camera when the simulation was started)
 3. The map's coordinate frame
 
-The following figure demonstrates these coordinate frames and their origin:
+The following figure demonstrates these coordinate frames and their origins:
 
 
 ![coordinate](Images/Figure-2.png)
 
 
-Code is provided in map.py for building the initial occupancy map.
+Code is provided in map.py for building an initial occupancy map.
 
 
-<img src="Images/Figure_5.png" width="150" height="150">
+<img src="Images/Figure_5.png" width="300" height="300">
 
 ## Main project
 
 The main project is carried out in car-sim.py.
-Given the inirtial occupancy map, RRT^* is used to 
+Given the inirtial occupancy map, RRT^* is used to generate a path from the start point (300,50) to the end point (25,250).
+When the vehicle reaches the vacinity of the unknown-obstacle, it starts processing images taken from the scene. Maks-RCNN is used to detect the obstacle in the image, then depth map is used to determin the position of the unknown-obstacle. The map is then updated using this information, and a new path is generated. 
+The vehicle then follows the new path to the goal location.
+
+
+<img src="Images/Figure-3.png" width="400" height="400">
+
+<img src="Images/Figure-4.png" width="500" height="300">
+
 
 
 
