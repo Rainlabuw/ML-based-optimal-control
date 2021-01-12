@@ -68,8 +68,6 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
 In this work, a Machine Learning based perception module is developed using Masked-RCNN (and Bayesian Neural Networks) with RGB-D images to estimate the position of objects in an Unreal Engin environment. Two methods are offered for autonomous navigation:
 
 * Sampling based approaches such as RRT^* and Astar 
@@ -93,6 +91,10 @@ Main requirements are as follows:
 Please download and install unreal engin. 
 I have created an unreal engine environment of an airport. This environment can be downloaded from here: 
 * [Airport environment](https://drive.google.com/file/d/1zUhz1Me5F2KKPsuPvBpftNABcb4D2hnI/view?usp=sharing)
+
+Make sure to load AirportShowcase and hit play before running any code.
+
+![AirportShowcase](Images/Figure-1.jpg)
 
 ### Building the initial map
 
