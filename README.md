@@ -70,21 +70,17 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-There are many great README templates available on GitHub, however, I didn't find one that really suit my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+In this work, a Machine Learning based perception module is developed using Masked-RCNN (and Bayesian Neural Networks) with RGB-D images to estimate the position of objects in an Unreal Engin environment. Two methods are offered for autonomous navigation:
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should element DRY principles to the rest of your life :smile:
+* Sampling based approaches such as RRT^* and Astar 
+* stochastic optimal control: Successive convexification for path planning.
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have have contributed to expanding this template!
-
-A list of commonly used resources that I find helpful are listed in the acknowledgements.
+It should be mentioned that some parts of the project is still under development.
 
 ## Requirements
 
-This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-* [Bootstrap](https://getbootstrap.com)
+Requirements are as follows:
+* [Unreal Engin 4.25.3](https://www.unrealengine.com/en-US/download)
 * [JQuery](https://jquery.com)
 * [Laravel](https://laravel.com)
 
@@ -144,7 +140,7 @@ See the [open issues](https://github.com/othneildrew/Best-README-Template/issues
 <!-- CONTACT -->
 ## Contact
 
-Niyousha Rahimi - [nrahimi@uw.edu](nrahimi@uw.edu)
+Niyousha Rahimi - nrahimi@uw.edu
 
 RAIN Lab, University of Washington
 
