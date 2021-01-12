@@ -94,7 +94,7 @@ I have created an unreal engine environment of an airport. This environment can 
 
 Make sure to load AirportShowcase and hit play before running any code.
 
-![AirportShowcase](Images/Figure-1.jpg)
+![AirportShowcase](Images/Figure-1.png)
 
 ### Building the initial map
 
