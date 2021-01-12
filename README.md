@@ -90,8 +90,9 @@ Main requirements are as follows:
 <!-- GETTING STARTED -->
 ## Getting Started with Unreal Engin
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+Please download and install unreal engin. 
+I have created an unreal engine environment of an airport. This environment can be downloaded from here: 
+* [Airport environment](https://drive.google.com/file/d/1zUhz1Me5F2KKPsuPvBpftNABcb4D2hnI/view?usp=sharing)
 
 ### Building the initial map
 
