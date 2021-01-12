@@ -98,7 +98,11 @@ There are three frame of references we need to consider:
 
 The following figure demonstrates these coordinate frames and their origin:
 
+
 ![AirportShowcase](Images/Figure-2.png)
+
+
+To build the initial occupancy map
 
 ## Main project
 
