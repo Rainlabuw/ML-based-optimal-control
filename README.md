@@ -129,6 +129,7 @@ Here's a demo of the simulation:
 
 <a href="https://github.com/NiyoushaRahimi/UW-MLP/blob/main/Images/demo.mp4">View Demo</a>
 
+<img src="Images/Figure-6.png" width="500" height="300">
 
 <!-- ROADMAP -->
 ## Roadmap
