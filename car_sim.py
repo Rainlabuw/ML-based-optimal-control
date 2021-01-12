@@ -212,6 +212,8 @@ pose = airsim.Pose(position, heading)
 client.simSetVehiclePose(pose, True)
 
 
+# True position of the unknown obstacle (Car_2)
+unknown_object_pose = [ (client.simGetObjectPose('Car_2').position.y_val-unreal_origin[1])+125, (client.simGetObjectPose('Car_2').position.x_val-unreal_origin[0])*(-1)+75]
 
 
 switch = 0      
@@ -232,9 +234,7 @@ while(np.sqrt( (vehicle_pose[0]-plan[-1][0])**2 + (vehicle_pose[1]-plan[-1][1])*
         client.setCarControls(car_controls)
         time.sleep(.1)
         
-        # save_images()
-        unknown_object_pose = [ (client.simGetObjectPose('Car_2').position.y_val-unreal_origin[1])+125, (client.simGetObjectPose('Car_2').position.x_val-unreal_origin[0])*(-1)+75]
-
+        
         if (np.sqrt((vehicle_pose[0]-unknown_object_pose[0])**2+(vehicle_pose[1]-unknown_object_pose[1])**2))<25 and switch==0: #
             
             car_heading = proper_angle(client.getCarState().kinematics_estimated.linear_velocity.y_val, -client.getCarState().kinematics_estimated.linear_velocity.x_val)
