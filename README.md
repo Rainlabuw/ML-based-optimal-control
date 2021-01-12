@@ -127,14 +127,16 @@ The vehicle then follows the new path to the goal location.
 ## Usage
 Here's a demo of the simulation:
 
-<img src="Images/demo.mp4" width="500" height="300">
-
+<a href="https://github.com/NiyoushaRahimi/UW-MLP/blob/main/Images/demo.mp4">View Demo</a>
 
 
 <!-- ROADMAP -->
 ## Roadmap
+Please look out for these updates in coming days:
 
-
+1. updating the vehicle's controller.
+2. successive convexification for path planning.
+3. using Bayesian NN to predict accuracy of the estimates.
 
 
 
