@@ -40,7 +40,7 @@
       <a href="#about-the-project">About The Project</a>
       </li>
       <li>
-      <a href="#Requirements">Built With</a></li>
+      <a href="#Requirements">Requirements</a></li>
       </ul>
     </li>
     <li>
@@ -50,7 +50,13 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
+    <li><a href="#main-project">Main Project</a>
+       <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+       </ul>
+    </li>
+    
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
