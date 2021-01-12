@@ -99,19 +99,18 @@ There are three frame of references we need to consider:
 The following figure demonstrates these coordinate frames and their origin:
 
 
-![AirportShowcase](Images/Figure-2.png)
+![coordinate](Images/Figure-2.png)
 
 
 Code is provided in map.py for building the initial occupancy map.
 
 
-![Initial occupancy map](Images/Figure_5.png)
 <img src="Images/Figure_5.png" width="150" height="150">
 
 ## Main project
 
 The main project is carried out in car-sim.py.
-Given the inirtial occupancy map, RRT^* is used to draw 
+Given the inirtial occupancy map, RRT^* is used to 
 
 
 
