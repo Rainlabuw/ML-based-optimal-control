@@ -38,8 +38,9 @@
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#Requirements">Built With</a></li>
+      </li>
+      <li>
+      <a href="#Requirements">Built With</a></li>
       </ul>
     </li>
     <li>
