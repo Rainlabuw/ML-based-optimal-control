@@ -106,7 +106,7 @@ The following figure demonstrates these coordinate frames and their origins:
 Code is provided in map.py for building an initial occupancy map.
 
 
-<img src="Images/Figure_5.png" width="500" height="300">
+<img src="Images/Figure_5.png" width="300" height="300">
 
 ## Main project
 
@@ -116,9 +116,9 @@ When the vehicle reaches the vacinity of the unknown-obstacle, it starts process
 The vehicle then follows the new path to the goal location.
 
 
-<img src="Images/Figure-3.png" width="300" height="300">
+<img src="Images/Figure-3.png" width="400" height="400">
 
-<img src="Images/Figure-4.png" width="300" height="300">
+<img src="Images/Figure-4.png" width="500" height="300">
 
 
 
