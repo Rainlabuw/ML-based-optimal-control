@@ -91,11 +91,14 @@ Make sure to load AirportShowcase and hit play before running any code.
 
 ### Building the initial map
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+There are three frame of references we need to consider:
+1. Unreal-engin coordinate frame
+2. The moving vehicle coordinate frame (the origin of the airsim's coordinate frame is placed at the position of camera when the simulation was started)
+3. The map's coordinate frame
+
+The following figure demonstrates these coordinate frames and their origin:
+
+![AirportShowcase](Images/Figure-2.png)
 
 ## Main project
 
