@@ -105,7 +105,7 @@ The following figure demonstrates these coordinate frames and their origin:
 Code is provided in map.py for building the initial occupancy map.
 
 
-![Initial occupancy map](Images/Figure-5.png)
+![Initial occupancy map](Images/Figure_5.png)
 
 
 ## Main project
