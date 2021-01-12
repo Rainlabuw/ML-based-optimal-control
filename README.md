@@ -26,7 +26,7 @@
     <br />
     <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
+    <a href="https://github.com/NiyoushaRahimi/UW-MLP/issues">Report Bug</a>
   </p>
 </p>
 
@@ -52,7 +52,7 @@
     </li>
     <li><a href="#main-project">Main Project</a>
        <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#Building-initial-map">Building the initial map</a></li>
         <li><a href="#installation">Installation</a></li>
        </ul>
     </li>
@@ -97,7 +97,7 @@ This section should list any major frameworks that you built your project using.
 This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
-### Prerequisites
+### Building the initial map
 
 This is an example of how to list things you need to use the software and how to install them.
 * npm
@@ -105,7 +105,7 @@ This is an example of how to list things you need to use the software and how to
   npm install npm@latest -g
   ```
 
-### Installation
+### Main project
 
 1. Get a free API Key at [https://example.com](https://example.com)
 2. Clone the repo
