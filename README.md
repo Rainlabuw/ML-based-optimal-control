@@ -101,7 +101,7 @@ The following figure demonstrates these coordinate frames and their origins:
 
 
 
-<coordinate src="Images/Figure-2.png" width="300" height="300">
+<img src="Images/Figure-2.png" width="300" height="300">
 
 Code is provided in map.py for building an initial occupancy map.
 
