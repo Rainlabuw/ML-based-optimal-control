@@ -16,7 +16,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
+  <a href="https://github.com/NiyoushaRahimi/UW-MLP">
   </a>
 
   <h3 align="center">Machine Learning based Perception for Optimal Motion Planning and Control</h3>
