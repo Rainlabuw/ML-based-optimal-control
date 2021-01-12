@@ -1,3 +1,11 @@
+
+"""
+Created on Wed Feb  8 09:15:38 2020
+
+@author: Niyousha Rahimi
+"""
+
+
 import time
 import numpy
 
@@ -20,7 +28,7 @@ class AStarPlanner(object):
         plan = []
         
 
-        # TODO (student): Implement your planner here.
+        
 
         plan.append(start_config)
         plan.append(goal_config)
@@ -96,7 +104,7 @@ class AStarPlanner(object):
         
         
     def ShortenPath(self, start, goal, epsilon):
-        # TODO (student): Postprocessing of the plan.    
+        # Postprocessing of the plan.    
         path = []
         path.append(goal)
         

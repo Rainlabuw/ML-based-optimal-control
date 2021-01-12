@@ -1,3 +1,11 @@
+
+"""
+Created on Wed Feb  1 10:31:53 2020
+
+@author: Niyousha Rahimi
+"""
+
+
 import numpy
 import cv2
 
@@ -22,7 +30,7 @@ class MapEnvironment(object):
         self.ylimit = [0, numpy.shape(self.map)[0]] # TODO (avk): Check if this needs to flip.
         self.xlimit = [0, numpy.shape(self.map)[1]]
         
-        print(self.xlimit, self.ylimit)
+        # print(self.xlimit, self.ylimit)
 
         
         # Check if start and goal are within limits and collision free
@@ -31,10 +39,11 @@ class MapEnvironment(object):
             exit(0)
 
         # Display the map
+        # plt.figure()
         plt.imshow(self.map, interpolation='nearest')
         
     def compute_distance(self, start_config, end_config):
-        # TODO: Implement a function which computes the distance between
+        # a function which computes the distance between
         # two configurations.
         #
         dx = end_config[0]-start_config[0]
@@ -45,7 +54,7 @@ class MapEnvironment(object):
 
 
     def state_validity_checker(self, config):
-        # TODO: Implement a state validity checker
+        # a state validity checker
         # Return true if valid.
         
         #print('config= ',config )
@@ -79,7 +88,7 @@ class MapEnvironment(object):
     def edge_validity_checker(self, config1, config2):
 
         #
-        # TODO: Implement an edge validity checker
+        # an edge validity checker
         x1 = numpy.minimum(config1[0],config2[0])
         x2 = numpy.maximum(config1[0],config2[0])
         y1 = numpy.minimum(config1[1],config2[1])
@@ -97,7 +106,7 @@ class MapEnvironment(object):
         pass
 
     def compute_heuristic(self, config, goal):
-        # TODO: Implement a function to compute heuristic.
+        # a function to compute heuristic.
         dx = config[0]-goal[0]
         dy = config[1]-goal[1]
         h = numpy.sqrt(dx**2+dy**2)

@@ -1,3 +1,11 @@
+
+"""
+Created on Wed Feb  1 22:17:11 2020
+
+@author: Niyousha Rahimi
+"""
+
+
 import operator
 import numpy
 

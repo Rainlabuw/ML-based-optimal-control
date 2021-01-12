@@ -1,3 +1,13 @@
+
+"""
+Created on Wed Feb  2 11:43:11 2020
+
+@author: Niyousha Rahimi
+"""
+
+
+
+
 import numpy
 from RRTTree import RRTTree
 from random import randint
@@ -21,12 +31,18 @@ class RRTStarPlanner(object):
         # Start with adding the start configuration to the tree.
         self.tree.AddVertex(start_config)
 
-        # TODO (student): Implement your planner here.
+        
         plan.append(start_config)
         plan.append(goal_config)
         ii=0
+        
+        print('#### Path Planning using RRT* method ####')
+        print('...')
+        print('It will take a few seconds...')
+        print('')
+        
         for i in range(1,5000):
-            print("i=",i)
+            # print("i=",i)
             ii=i
             self.extend(start_config, goal_config,epsilon)
             
@@ -80,7 +96,7 @@ class RRTStarPlanner(object):
 
     def extend(self,start_config, goal_config,epsilon):
         
-        # TODO (student): Implement an extend logic.
+        #Implementing an extend logic.
         rand = numpy.random.randint(1,101)
         if rand<=20:
             s_rand = goal_config
@@ -154,7 +170,7 @@ class RRTStarPlanner(object):
 
     
     def ShortenPath(self, goal):
-        # TODO (student): Postprocessing of the plan.
+        #Postprocessing of the plan.
         vertices = self.tree.vertices
         edge = self.tree.edges
         i=1

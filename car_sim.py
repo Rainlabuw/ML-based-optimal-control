@@ -2,7 +2,7 @@
 """
 Created on Wed Oct  7 13:30:52 2020
 
-@author: newsh
+@author: Niyousha Rahimi
 """
 
 
@@ -12,35 +12,44 @@ import cv2
 import numpy as np
 import os
 import sys
-
 import time
-import numpy as np
 from matplotlib import pyplot as plt
-from PIL import Image
-import imageio
-import pprint
-
-import argparse, numpy, time
 
 
-# Root directory of the project
+# Root directory of the project. Please change accordingly
 ROOT_DIR = os.path.abspath("C:/Users/newsh/Desktop/Motion_lanning/AirSimNH")
 sys.path.append(ROOT_DIR)
 
 
+
 from MapEnvironment import MapEnvironment
-from RRTPlanner import RRTPlanner
 from RRTStarPlanner import RRTStarPlanner
 from AStarPlanner import AStarPlanner
-from IPython import embed
 
-# from Mask_RCNN import Mask_RCNN 
+from Mask_RCNN import Mask_RCNN 
 
 
-# MRN = Mask_RCNN()
+
+
+
+def test_():
+    global client
+    responses = client.simGetImages([airsim.ImageRequest("0", airsim.ImageType.Scene, False, False)])
+    response = responses[0]
+    img1d = np.frombuffer(response.image_data_uint8, dtype=np.uint8) 
+        
+    # reshape array to 3 channel image array H X W X 3
+    img_rgb = img1d.reshape(response.height, response.width, 3)
+
+    # Instant segmentation using Mask-RCNN
+    unknown_object_semantics = MRN.Object_detection(img_rgb)
+
+
 
 def update_map(center, env_map):
-    env_map[int(center[1]-7):int(center[1]+7), int(center[0]-7):int(center[0]+7)]=0
+    ##### Updating the map when an object is detected ######
+    # It will put a box of 10 by 10 at the center mass of the object.
+    env_map[int(center[1]-5):int(center[1]+5), int(center[0]-5):int(center[0]+5)]=0
     return env_map
 
 
@@ -52,117 +61,134 @@ def proper_round(a):
 
 
     
-def proper_angle(dy, dx):
-    if dx==0:
-        return 0.0
+def proper_angle(dx, dy):
+    dy *= -1
+    
+    if dx <= 0 and dy >= 0:
+        return 5*np.pi/2 - np.arctan2(dy, dx)
     else:
-        
-        if dy>0 and dx<0:
-            return np.arctan(dy/dx)
-        elif dy<0 and dx<0:
-            return np.arctan(dy/dx)
-        elif dy>0 and dx>0:
-            return -np.pi/2-np.arctan(dy/dx)
-                
+        return np.pi/2 - np.arctan2(dy, dx)
+
+
+def setCarSteering(car_heading, path_heading):
+    
+    if car_heading >= 3*np.pi/2 and car_heading < 2*np.pi:
+        if path_heading >= 0 and path_heading <= np.pi/2:
+            steering = 0.45
+        elif car_heading > path_heading:
+            steering = -.45
         else:
-            return np.arctan(dy/dx)
+            steering = .45    
+    elif car_heading >= 0 and car_heading <= np.pi/2:
+        if path_heading >= 3*np.pi/2 and path_heading < 2*np.pi:
+            steering = -0.45
+        elif car_heading > path_heading:
+            steering = -.45
+        else:
+            steering = .45
+    elif car_heading > path_heading:
+        steering = -.45
+    else:
+        steering = .45
+    return steering
 
 
-# def follow_path(path, initial_heading):
-#     if 
+
+
+
+def CheckForObstacles(unknown_object_semantics, vehicle_pose):
+    global client
+    global MRN
+     
+    responses = client.simGetImages([airsim.ImageRequest(0, airsim.ImageType.DepthPerspective, pixels_as_float=True)])
+    response = responses[0]
+    img1d = np.array(response.image_data_float, dtype=np.float)
+    # img1d = img1d * 1.5 #+ 30
+    # img1d[img1d > 255] = 255
+    img2d = np.reshape(img1d, (responses[0].height, responses[0].width))#np.fliplr()
+    depth = np.array(img2d, dtype=np.uint8)
+    
+    
+    
+    got_depth = MRN.point_cloud(depth, vehicle_pose)
+    
+    
+    return MRN.object_pose_estimate(got_depth, unknown_object_semantics[0])
+
+
 
 
 
 idx = 0
 def save_images():
+    ### Use this function to save Scene images from camera 1 ###
+    ### Camera settings can be changed through settings.jason (it is usually under Documents/airsim) ###
     global idx 
     global client
     idx += 1
     #get camera images from the car
     responses = client.simGetImages([
-        # airsim.ImageRequest("1", airsim.ImageType.Segmentation, False, False)])
         airsim.ImageRequest("1", airsim.ImageType.Scene)])  #scene vision image in uncompressed RGB array
-    # print('Retrieved images: %d', len(responses))
-    
-    # img_DIR = os.path.join(ROOT_DIR, "images")
-    # filename = os.path.normpath('C:/Users/newsh/Desktop/Motion_lanning/AirSimNH/py' + str(idx) + '.png') 
-    # if not os.path.exists(img_DIR):
-    #     os.makedirs(img_DIR)
-    
-    
-    # response = responses[0]
-    # airsim.write_file(filename , response.image_data_uint8)
-    # # img1d = np.frombuffer(response.image_data_uint8, dtype=np.uint8) # get numpy array
-    # # img_rgb = img1d.reshape(response.height, response.width, 3) # reshape array to 3 channel image array H X W X 3
-    # # cv2.imwrite(os.path.normpath(filename + '.png'), img_rgb) # write to png
-    
-    # get camera images from the car
-    responses = client.simGetImages([
-        # airsim.ImageRequest("1", airsim.ImageType.Segmentation, False, False)])
-        airsim.ImageRequest("1", airsim.ImageType.Scene)])  #scene vision image in uncompressed RGB array
-    # print('Retrieved images: %d', len(responses))
     
     filename = 'c:/temp/py' + str(idx)
     if not os.path.exists('c:/temp/'):
         os.makedirs('c:/temp/')
     
-    
     response = responses[0]
     airsim.write_file(os.path.normpath(filename + '.png'), response.image_data_uint8)
-    # MRN.Object_detection((os.path.normpath(filename + '.png')))
     
-# def setCarControls():
-    
-#     if car_state.speed > 4:
-#             car_controls.throttle = 0
-#         else:
-#             car_controls.throttle = 0.5
-#         car_controls.steering = 0
-#         client.setCarControls(car_controls)
-#         time.sleep(.1)
 
-pp = pprint.PrettyPrinter(indent=4)
 
-seed = np.random.seed()
-print(seed)
+
+
+
+'''
+######################### MAIN ##############################
+'''
+MRN = Mask_RCNN()
 
 # connect to the AirSim simulator 
 client = airsim.CarClient()
 client.confirmConnection()
 client.enableApiControl(True)
 car_controls = airsim.CarControls()
-client.reset()
-# car_controls.brake = 1
-# client.setCarControls(car_controls)
-# time.sleep(.1)
+# client.reset()
+# Loading the NN weights
+test_()
 
 
 
-print('initial heading = ' ,(client.simGetVehiclePose().orientation.z_val)*180/np.pi)
 
+
+#################### Getting unreal engine origin for change of frame ####################
 unreal_origin = [client.simGetObjectPose('SM_TerminalBlockout_18').position.x_val, client.simGetObjectPose('SM_TerminalBlockout_18').position.y_val]
-vehicle_pose = [(client.simGetVehiclePose().position.y_val-unreal_origin[1])+125, (client.simGetVehiclePose().position.x_val-unreal_origin[0])*(-1)+75]
+print('unreal_origin = ', unreal_origin)
 
+
+#################### The starting point of the simulator is the airsim origin ####################
+vehicle_pose = [(client.simGetVehiclePose().position.y_val-unreal_origin[1])+125, (client.simGetVehiclePose().position.x_val-unreal_origin[0])*(-1)+75]
 vehicle_path = []
 
 
-start = [int(vehicle_pose[0]), int(vehicle_pose[1])]#[148, 321]
+
+#################### Initial path planning ####################
+start = [300, 50]
 print('start = ', start)
 goal = [25,250]
 
 vehicle_path.append(start)
 
-# First setup the environment and the robot.
+# Loading the original MAP
 img = cv2.imread('savedImage.jpg')
 map_ = img[:,:,0]
+
 planning_env = MapEnvironment(map_, start, goal, True) 
 
-planner = 'rrtstar' #'' rrtstar''rrtstar
+# Please avoid astar planner for now, as it has some issues
+planner = 'rrtstar' 
 
 if planner == 'astar':
     planner = AStarPlanner(planning_env)
-elif planner == 'rrt':
-    planner = RRTPlanner(planning_env)
 elif planner == 'rrtstar':
     planner = RRTStarPlanner(planning_env)
 else:
@@ -170,120 +196,148 @@ else:
     exit(0)
 
 
-
 plan = planner.Plan(start, goal)
-# plan.reverse()
-
-print(plan)
-
-theta=proper_angle(plan[1][1]-plan[0][1], plan[1][0]-plan[0][0])
-
-theta-=np.pi/2
-print(theta*180/np.pi)
-if theta*180/np.pi<-180.0:
-    theta+=np.pi/2
+print('original plan check points: ', plan)
 
 
-vehicle_pose = [(client.simGetVehiclePose().position.y_val-unreal_origin[1])+125, (client.simGetVehiclePose().position.x_val-unreal_origin[0])*(-1)+75]
-print(vehicle_pose)
-position = airsim.Vector3r(0,0,0)
+
+
+
+#################### Setting the car location to the start point ####################
+theta=proper_angle(plan[1][0]-plan[0][0], plan[1][1]-plan[0][1])
+
+position = airsim.Vector3r(round(unreal_origin[0])+25, round(unreal_origin[1])+175, 0)
 heading = airsim.utils.to_quaternion(0,0,theta)
 pose = airsim.Pose(position, heading)
 client.simSetVehiclePose(pose, True)
 
-switch = 0
 
-print('heading= %d, shib = %e', client.simGetVehiclePose().orientation.z_val, np.arctan((plan[1][1]-plan[0][1])/(plan[1][0]-plan[0][0]))-np.pi/2 )
+
+
+switch = 0      
 i=1
 while(np.sqrt( (vehicle_pose[0]-plan[-1][0])**2 + (vehicle_pose[1]-plan[-1][1])**2) > 10 ):
     
-    while(np.sqrt( (vehicle_pose[0]-plan[i][0])**2 + (vehicle_pose[1]-plan[i][1])**2) > 13 ):
+    while(np.sqrt( (vehicle_pose[0]-plan[i][0])**2 + (vehicle_pose[1]-plan[i][1])**2) > 10 ):
         car_state = client.getCarState()
         vehicle_pose = [ (client.simGetVehiclePose().position.y_val-unreal_origin[1])+125, (client.simGetVehiclePose().position.x_val-unreal_origin[0])*(-1)+75]
-        print(vehicle_pose)
+        # print(vehicle_pose)
         vehicle_path.append(vehicle_pose)
-        unknown_object_pose = [ (client.simGetObjectPose('Car_2').position.y_val-unreal_origin[1])+125, (client.simGetObjectPose('Car_2').position.x_val-unreal_origin[0])*(-1)+75]
         
-        if car_state.speed > 4:
+        if car_state.speed > 5:
             car_controls.throttle = 0
         else:
             car_controls.throttle = 0.5
         car_controls.steering = 0
         client.setCarControls(car_controls)
         time.sleep(.1)
-        save_images()
         
-        if (np.sqrt((vehicle_pose[0]-unknown_object_pose[0])**2+(vehicle_pose[1]-unknown_object_pose[1])**2))<30 and switch==0:
-            switch = 1
-            print('HERE WE GO!')
-            car_heading = proper_angle(-client.getCarState().kinematics_estimated.linear_velocity.x_val, client.getCarState().kinematics_estimated.linear_velocity.y_val)
-            print('car_heading =' , car_heading, car_heading*180/np.pi)
-            car_controls.throttle = 0
-            # car_controls.brake = 1
-            # client.setCarControls(car_controls)
-            # time.sleep(.1)
-            vehicle_pose = [ (client.simGetVehiclePose().position.y_val-unreal_origin[1])+125, (client.simGetVehiclePose().position.x_val-unreal_origin[0])*(-1)+75]
-            print(vehicle_pose)
-            print(unknown_object_pose)
-            vehicle_path.append(vehicle_pose)
+        # save_images()
+        unknown_object_pose = [ (client.simGetObjectPose('Car_2').position.y_val-unreal_origin[1])+125, (client.simGetObjectPose('Car_2').position.x_val-unreal_origin[0])*(-1)+75]
+
+        if (np.sqrt((vehicle_pose[0]-unknown_object_pose[0])**2+(vehicle_pose[1]-unknown_object_pose[1])**2))<25 and switch==0: #
             
-            map_ = update_map(unknown_object_pose, map_)
-            start = [proper_round(vehicle_pose[0]), proper_round(vehicle_pose[1])]
-            planning_env2 = MapEnvironment(map_, start, goal, True) 
-            plan.clear()
-            planner2 = RRTStarPlanner(planning_env2)
-            plan = planner2.Plan(start, goal,1, 1)
-            i = 1
-            print(plan)
+            car_heading = proper_angle(client.getCarState().kinematics_estimated.linear_velocity.y_val, -client.getCarState().kinematics_estimated.linear_velocity.x_val)
+               
+            car_controls.brake = 1
+            client.setCarControls(car_controls)
+            time.sleep(.1)
             
-            path_heading = proper_angle((plan[i][1]-plan[i-1][1]), plan[i][0]-plan[i-1][0] )
-            print('path_heading = ', path_heading, path_heading*180/np.pi)
+            responses = client.simGetImages([airsim.ImageRequest("0", airsim.ImageType.Scene, False, False)])
+            response = responses[0]
+            img1d = np.frombuffer(response.image_data_uint8, dtype=np.uint8) 
             
             
-            if car_heading > path_heading:
-                car_controls.steering = -.25
-            else:
-                car_controls.steering = .25
             
-            while(np.abs(car_heading- path_heading)>0.02):
-                car_controls.throttle = 0.5
-                client.setCarControls(car_controls)
-                time.sleep(.1)
-                save_images()
+            # reshape array to 3 channel image array H X W X 3
+            img_rgb = img1d.reshape(response.height, response.width, 3)
+            # plt.imshow(img_rgb)
+            
+            
+            # Instant segmentation using Mask-RCNN
+            unknown_object_semantics = MRN.Object_detection(img_rgb)
+            
+            
+            if  len(unknown_object_semantics) > 0: 
+            
+                switch = 1
+                print('Replanning')
+                 
                 
-                car_heading = proper_angle(-client.getCarState().kinematics_estimated.linear_velocity.x_val, client.getCarState().kinematics_estimated.linear_velocity.y_val)
-                print('car_heading =' , car_heading)
                 vehicle_pose = [ (client.simGetVehiclePose().position.y_val-unreal_origin[1])+125, (client.simGetVehiclePose().position.x_val-unreal_origin[0])*(-1)+75]
                 vehicle_path.append(vehicle_pose)
-            
-       
-    print(vehicle_pose, plan[i])
-    if (vehicle_pose[0]<35):
+                obs_pose = CheckForObstacles(unknown_object_semantics, vehicle_pose)
+    
+                print('')
+                print('#########################')
+                print('vehicle pose = ', vehicle_pose)
+                print('obstacle pose = ', obs_pose)
+                print('True obstacle pose = ', unknown_object_pose)
+                print('#########################')
+                print('')
+                
+                map_ = update_map(obs_pose[0:2], map_) #obs_pose[0:2]
+                start = [proper_round(vehicle_pose[0]), proper_round(vehicle_pose[1])]
+                planning_env2 = MapEnvironment(map_, start, goal, True) 
+                plan.clear()
+                planner2 = RRTStarPlanner(planning_env2)
+                plan = planner2.Plan(start, goal,1, 1)
+                i = 1
+                print(plan)
+                
+                path_heading = proper_angle(plan[i][0]-plan[i-1][0], (plan[i][1]-plan[i-1][1]) )
+                
+                car_controls.brake = 0  
+                car_controls.steering = setCarSteering(car_heading, path_heading)
+                print('Initiate steering')
+                while(np.abs(car_heading- path_heading)>0.03):
+                    car_controls.throttle = 0.5
+                    client.setCarControls(car_controls)
+                    time.sleep(.1)
+                    
+                    
+                    car_heading = proper_angle(client.getCarState().kinematics_estimated.linear_velocity.y_val, -client.getCarState().kinematics_estimated.linear_velocity.x_val)
+                    # print('car_heading =' , car_heading)
+                    vehicle_pose = [ (client.simGetVehiclePose().position.y_val-unreal_origin[1])+125, (client.simGetVehiclePose().position.x_val-unreal_origin[0])*(-1)+75]
+                    vehicle_path.append(vehicle_pose)
+                print('Done')
+                print('')
+                
+            if switch == 0: 
+                car_controls.brake = 0
+                car_controls.throttle = 0.5
+                car_controls.steering = 0
+                client.setCarControls(car_controls)
+                time.sleep(.1)
+                vehicle_pose = [ (client.simGetVehiclePose().position.y_val-unreal_origin[1])+125, (client.simGetVehiclePose().position.x_val-unreal_origin[0])*(-1)+75]
+                vehicle_path.append(vehicle_pose)
+                
+    
+    if (vehicle_pose[0]<35 ):
         break
     i+=1
     if i >= np.size(plan)-1:
         break
-    path_heading = proper_angle((plan[i][1]-plan[i-1][1]), plan[i][0]-plan[i-1][0] )
-    print('path_heading = ', path_heading, path_heading*180/np.pi)
-    car_heading = proper_angle(-client.getCarState().kinematics_estimated.linear_velocity.x_val, client.getCarState().kinematics_estimated.linear_velocity.y_val)
-    print('car_heading =' , car_heading, car_heading*180/np.pi)
+    path_heading = proper_angle(plan[i][0]-plan[i-1][0], (plan[i][1]-plan[i-1][1]))
+    car_heading = proper_angle(client.getCarState().kinematics_estimated.linear_velocity.y_val, -client.getCarState().kinematics_estimated.linear_velocity.x_val)
     
-    if car_heading > path_heading:
-        car_controls.steering = -.25
-    else:
-        car_controls.steering = .25
     
-    while(np.abs(car_heading- path_heading)>0.02):
+    car_controls.steering = setCarSteering(car_heading, path_heading)
+    print('Initiate steering')
+    while(np.abs(car_heading- path_heading)>0.03):
         car_controls.throttle = 0.5
         client.setCarControls(car_controls)
         time.sleep(.1)
-        save_images()
+        # save_images()
         
         
-        car_heading = proper_angle(-client.getCarState().kinematics_estimated.linear_velocity.x_val, client.getCarState().kinematics_estimated.linear_velocity.y_val)
-        print('car_heading =' , car_heading)
+        car_heading = proper_angle(client.getCarState().kinematics_estimated.linear_velocity.y_val, -client.getCarState().kinematics_estimated.linear_velocity.x_val)
+        
         vehicle_pose = [ (client.simGetVehiclePose().position.y_val-unreal_origin[1])+125, (client.simGetVehiclePose().position.x_val-unreal_origin[0])*(-1)+75]
         vehicle_path.append(vehicle_pose)
+    print('Done')
+    print('')
+    
     vehicle_pose = [ (client.simGetVehiclePose().position.y_val-unreal_origin[1])+125, (client.simGetVehiclePose().position.x_val-unreal_origin[0])*(-1)+75]
     vehicle_path.append(vehicle_pose)
     
@@ -291,12 +345,16 @@ while(np.sqrt( (vehicle_pose[0]-plan[-1][0])**2 + (vehicle_pose[1]-plan[-1][1])*
 car_controls.brake = 1
 client.setCarControls(car_controls)
 time.sleep(.1)
-save_images()
 
+
+
+
+#################### Visualizing vehicle's path ####################
 for j in range(np.shape(vehicle_path)[0]-1):
     x = [vehicle_path[j][0], vehicle_path[j+1][0]]
     y = [vehicle_path[j][1], vehicle_path[j+1][1]]
     plt.plot(x,y, 'r', linewidth=4)
+
 
 #restore to original state
 client.reset()
