@@ -106,7 +106,7 @@ Code is provided in map.py for building the initial occupancy map.
 
 
 ![Initial occupancy map](Images/Figure_5.png)
-<img src="Images/Figure_5.png" width="50" height="50">
+<img src="Images/Figure_5.png" width="150" height="150">
 
 ## Main project
 
