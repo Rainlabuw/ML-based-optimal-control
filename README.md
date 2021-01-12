@@ -49,7 +49,7 @@
        <ul>
         <li><a href="#Building-initial-map">Building the initial map</a></li>
        </ul>
-    </li><a href="#main-project">Main Project</a></li>
+    <li><a href="#main-project">Main Project</a></li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contact">Contact</a></li>
