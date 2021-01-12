@@ -61,7 +61,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-In this work, a Machine Learning based perception module is developed using Masked-RCNN (and Bayesian Neural Networks) with RGB-D images to estimate the position of objects in an Unreal Engin environment. Two methods are offered for autonomous navigation:
+In this work, a Machine Learning based perception module is developed using Mask-RCNN (and Bayesian Neural Networks) with RGB-D images to estimate the position of objects in an Unreal Engin environment. Two methods are offered for autonomous navigation:
 
 * Sampling based approaches such as RRT^* and Astar 
 * stochastic optimal control: Successive convexification for path planning.
