@@ -44,18 +44,12 @@
       </ul>
     </li>
     <li>
-      <a href="#getting-started-with-unreal-engin">Getting Started with Unreal Engin</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
+      <a href="#getting-started-with-unreal-engin">Getting Started with Unreal Engin</a></li>
     <li><a href="#main-project">Main Project</a>
        <ul>
         <li><a href="#Building-initial-map">Building the initial map</a></li>
-        <li><a href="#installation">Installation</a></li>
        </ul>
-    </li>
+    </li><a href="#main-project">Main Project</a></li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -104,7 +98,7 @@ This is an example of how to list things you need to use the software and how to
   npm install npm@latest -g
   ```
 
-### Main project
+## Main project
 
 1. Get a free API Key at [https://example.com](https://example.com)
 2. Clone the repo
