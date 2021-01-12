@@ -100,8 +100,8 @@ There are three frame of references we need to consider:
 The following figure demonstrates these coordinate frames and their origins:
 
 
+![coordinate](Images/Figure-2.png)
 
-<img src="Images/Figure-2.png" width="300" height="300">
 
 Code is provided in map.py for building an initial occupancy map.
 
@@ -115,9 +115,11 @@ Given the inirtial occupancy map, RRT^* is used to generate a path from the star
 When the vehicle reaches the vacinity of the unknown-obstacle, it starts processing images taken from the scene. Maks-RCNN is used to detect the obstacle in the image, then depth map is used to determin the position of the unknown-obstacle. The map is then updated using this information, and a new path is generated. 
 The vehicle then follows the new path to the goal location.
 
-![mask-RCNN](Images/Figure-3.png)
 
-![depth_map](Images/Figure-4.png)
+<img src="Images/Figure-3.png" width="300" height="300">
+
+<img src="Images/Figure-4.png" width="300" height="300">
+
 
 
 
