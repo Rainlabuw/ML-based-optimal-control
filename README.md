@@ -102,7 +102,11 @@ The following figure demonstrates these coordinate frames and their origin:
 ![AirportShowcase](Images/Figure-2.png)
 
 
-To build the initial occupancy map
+Code is provided in map.py for building the initial occupancy map.
+
+
+![Initial occupancy map](Images/Figure-5.png)
+
 
 ## Main project
 
