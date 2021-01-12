@@ -19,7 +19,7 @@
   <a href="https://github.com/othneildrew/Best-README-Template">
   </a>
 
-  <h3 align="center">Best-README-Template</h3>
+  <h3 align="center">MLP</h3>
 
   <p align="center">
     Machine Learning based Perception for Optimal Motion Planning and Control
