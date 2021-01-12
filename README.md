@@ -111,6 +111,10 @@ Code is provided in map.py for building an initial occupancy map.
 ## Main project
 
 The main project is carried out in car-sim.py.
+
+Please update root-directory in Mask_RCNN.py and car_sim.py.
+
+
 Given the inirtial occupancy map, RRT^* is used to generate a path from the start point (300,50) to the end point (25,250).
 When the vehicle reaches the vacinity of the unknown-obstacle, it starts processing images taken from the scene. Maks-RCNN is used to detect the obstacle in the image, then depth map is used to determin the position of the unknown-obstacle. The map is then updated using this information, and a new path is generated. 
 The vehicle then follows the new path to the goal location.
