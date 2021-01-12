@@ -24,7 +24,7 @@
   <p align="center">
     Niyousha Rahimi, RAIN Lab University of Washington
     <br />
-    <a href="#roadmap">View Demo</a>
+    <a href="#usage">View Demo</a>
     ·
     <a href="https://github.com/NiyoushaRahimi/UW-MLP/issues">Report Bug</a>
   </p>
@@ -56,6 +56,7 @@
         <li><a href="#installation">Installation</a></li>
        </ul>
     </li>
+    <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
