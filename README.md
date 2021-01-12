@@ -45,7 +45,6 @@
     </li>
     <li>
       <a href="#getting-started-with-unreal-engin">Getting Started with Unreal Engin</a></li>
-    <li><a href="#main-project">Main Project</a>
        <ul>
         <li><a href="#Building-initial-map">Building the initial map</a></li>
        </ul>
