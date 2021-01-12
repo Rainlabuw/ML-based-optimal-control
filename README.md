@@ -9,7 +9,7 @@
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
 
-[![LinkedIn][linkedin-shield]][https://www.linkedin.com/in/newsha-rahimi/]
+[![LinkedIn][linkedin-shield]][linkesin-url]
 
 
 
