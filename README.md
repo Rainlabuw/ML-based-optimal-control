@@ -100,8 +100,8 @@ There are three frame of references we need to consider:
 The following figure demonstrates these coordinate frames and their origins:
 
 
-![coordinate](Images/Figure-2.png)
 
+<img src="Images/Figure-2.png" width="500" height="300">
 
 Code is provided in map.py for building an initial occupancy map.
 
@@ -129,7 +129,7 @@ Here's a demo of the simulation:
 
 <a href="https://github.com/NiyoushaRahimi/UW-MLP/blob/main/Images/demo.mp4">View Demo</a>
 
-<img src="Images/Figure-6.png" width="500" height="300">
+<img src="Images/Figure-6.png" width="500" height="400">
 
 <!-- ROADMAP -->
 ## Roadmap
