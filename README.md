@@ -24,7 +24,7 @@
   <p align="center">
     Niyousha Rahimi, RAIN Lab University of Washington
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
+    <a href="#roadmap">View Demo</a>
     ·
     <a href="https://github.com/NiyoushaRahimi/UW-MLP/issues">Report Bug</a>
   </p>
