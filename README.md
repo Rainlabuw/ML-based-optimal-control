@@ -22,16 +22,11 @@
   <h3 align="center">Machine Learning based Perception for Optimal Motion Planning and Control</h3>
 
   <p align="center">
-    Niyousha Rahimi, RAIN Lab
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
-    <br />
+    Niyousha Rahimi, RAIN Lab University of Washington
     <br />
     <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
     ·
     <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
   </p>
 </p>
 
