@@ -79,10 +79,11 @@ It should be mentioned that some parts of the project is still under development
 
 ## Requirements
 
-Requirements are as follows:
+Main requirements are as follows:
 * [Unreal Engin 4.25.3](https://www.unrealengine.com/en-US/download)
-* [JQuery](https://jquery.com)
-* [Laravel](https://laravel.com)
+* [Airsim](https://github.com/microsoft/AirSim)
+* Tensorflow-gpu 1.13 (could work with v1.15)
+* Keras 2.1.6
 
 
 
