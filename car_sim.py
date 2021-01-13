@@ -251,9 +251,7 @@ while(np.sqrt( (vehicle_pose[0]-plan[-1][0])**2 + (vehicle_pose[1]-plan[-1][1])*
     while(np.sqrt( (vehicle_pose[0]-plan[i][0])**2 + (vehicle_pose[1]-plan[i][1])**2) > 10 ):
         car_state = client.getCarState()
         vehicle_pose = [ (client.simGetVehiclePose().position.y_val-unreal_origin[1])+125, (client.simGetVehiclePose().position.x_val-unreal_origin[0])*(-1)+75]
-        print('vehicle_pose = ',vehicle_pose)
-        print(plan[i])
-        print(i)
+        
         
         vehicle_path.append(vehicle_pose)
         
@@ -301,13 +299,13 @@ while(np.sqrt( (vehicle_pose[0]-plan[-1][0])**2 + (vehicle_pose[1]-plan[-1][1])*
                 vehicle_path.append(vehicle_pose)
                 obs_pose = CheckForObstacles(unknown_object_semantics, vehicle_pose, car_heading)
     
-                print('')
-                print('#########################')
-                print('vehicle pose = ', vehicle_pose)
-                print('obstacle pose = ', obs_pose)
-                print('True obstacle pose = ', unknown_object_pose)
-                print('#########################')
-                print('')
+                # print('')
+                # print('#########################')
+                # print('vehicle pose = ', vehicle_pose)
+                # print('obstacle pose = ', obs_pose)
+                # print('True obstacle pose = ', unknown_object_pose)
+                # print('#########################')
+                # print('')
                 
                 map_ = update_map(obs_pose[0:2], map_) #obs_pose[0:2]
                 start = [proper_round(vehicle_pose[0]), proper_round(vehicle_pose[1])]
