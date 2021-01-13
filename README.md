@@ -77,7 +77,9 @@ Main requirements are as follows:
 * Keras 2.1.6
 
 GPU and processor I used:
+
 Intel(R) Core(TM) i7-8850H CPU @  2.60 GHz, 2592 Mhz, 6 Core(s),  12  Logical Processor(s) 
+
 Nvidia Quadro P2000
 
 
