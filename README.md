@@ -76,6 +76,9 @@ Main requirements are as follows:
 * Tensorflow-gpu 1.13 (could work with v1.15)
 * Keras 2.1.6
 
+GPU and processor I used:
+Intel(R) Core(TM) i7-8850H CPU @  2.60 GHz, 2592 Mhz, 6 Core(s),  12  Logical Processor(s) 
+Nvidia Quadro P2000
 
 
 <!-- GETTING STARTED -->
