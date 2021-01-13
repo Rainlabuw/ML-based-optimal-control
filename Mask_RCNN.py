@@ -103,7 +103,7 @@ class Mask_RCNN:
         return obj_pose
     
     
-    def point_cloud(self, depth, cam_pose):
+    def point_cloud(self, depth, cam_pose, heading):
         """Transform a depth image into a point cloud with one point for each
         pixel in the image, using the camera transform for a camera
         centred at cx, cy with field of view fx, fy.
@@ -113,7 +113,13 @@ class Mask_RCNN:
         shape (rows, cols, 3). Pixels with invalid depth in the input have
         NaN for the z-coordinate in the result.
     
+        
+        NOTE: we also need a change of reference between camera frame and map frame
         """
+        
+        theta_y = heading
+        theta_x = np.pi/2 + theta_y
+        
         
         Width=256
         Height=144
@@ -121,12 +127,12 @@ class Mask_RCNN:
         focal_length=Width/2
         rows, cols = depth.shape
         ratio = max(rows,cols)
-        print(rows, cols)
+        # print(rows, cols)
         c, r = np.meshgrid(np.arange(cols), np.arange(rows), sparse=True)
         valid = (depth > 0) & (depth < 255)
-        z = np.where(valid, depth / 256.0, np.nan)
-        x = np.where(valid, cam_pose[0] - 100 * factor * z * (c - (cols / 2)) / ratio , 0) #focal_length
-        y = np.where(valid, cam_pose[1] - 100 * factor * z * (r - (rows / 2)) / ratio  , 0)
+        z = np.where(valid, depth/256 , np.nan)
+        x = np.where(valid, cam_pose[0] +  (-(100*factor * z * (c - (cols / 2)) / ratio) * np.sin(theta_x) + (100*factor * z * (r - (rows / 2)) / ratio)*np.sin(theta_y))  , 0) #focal_length
+        y = np.where(valid, cam_pose[1] -  (100*factor * z * (r - (rows / 2)) / ratio)*np.cos(theta_y) - (100*factor * z * (c - (cols / 2)) / ratio) * np.cos(theta_x)  , 0)
         
         return np.dstack((x, y, z))
 
@@ -145,6 +151,10 @@ class Mask_RCNN:
         r = results[0]
         
         
+        '''
+        ############## To plot semantic segmentation, uncomment the following ################3 
+        '''
+        # plt.figure()
         # image_classification.display_instances(image, r['rois'], r['masks'], r['class_ids'], 
         #                             self.class_names, r['scores'])
         

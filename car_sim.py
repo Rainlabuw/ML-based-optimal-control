@@ -14,7 +14,7 @@ import os
 import sys
 import time
 from matplotlib import pyplot as plt
-
+import math
 
 # Root directory of the project. Please change accordingly
 ROOT_DIR = os.path.abspath("C:/Users/newsh/Desktop/Motion_lanning/AirSimNH")
@@ -49,7 +49,7 @@ def test_():
 def update_map(center, env_map):
     ##### Updating the map when an object is detected ######
     # It will put a box of 10 by 10 at the center mass of the object.
-    env_map[int(center[1]-5):int(center[1]+5), int(center[0]-5):int(center[0]+5)]=0
+    env_map[int(center[1]-7):int(center[1]+7), int(center[0]-7):int(center[0]+7)]=0
     return env_map
 
 
@@ -96,21 +96,22 @@ def setCarSteering(car_heading, path_heading):
 
 
 
-def CheckForObstacles(unknown_object_semantics, vehicle_pose):
+def CheckForObstacles(unknown_object_semantics, vehicle_pose, car_heading):
     global client
     global MRN
      
     responses = client.simGetImages([airsim.ImageRequest(0, airsim.ImageType.DepthPerspective, pixels_as_float=True)])
     response = responses[0]
     img1d = np.array(response.image_data_float, dtype=np.float)
-    # img1d = img1d * 1.5 #+ 30
-    # img1d[img1d > 255] = 255
-    img2d = np.reshape(img1d, (responses[0].height, responses[0].width))#np.fliplr()
+    img1d = img1d * 3.5 + 30
+    img1d[img1d > 255] = 255
+    img2d = np.fliplr(np.reshape(img1d, (responses[0].height, responses[0].width)))
     depth = np.array(img2d, dtype=np.uint8)
     
     
+    savePointCloud(depth)
     
-    got_depth = MRN.point_cloud(depth, vehicle_pose)
+    got_depth = MRN.point_cloud(depth, vehicle_pose, car_heading)
     
     
     return MRN.object_pose_estimate(got_depth, unknown_object_semantics[0])
@@ -138,6 +139,33 @@ def save_images():
     airsim.write_file(os.path.normpath(filename + '.png'), response.image_data_uint8)
     
 
+def savePointCloud(depth):
+    color = (0, 255, 0)
+    rgb = "%d %d %d" % color
+    Width=256
+    Height=144
+    focal_length=Width/2
+    B=20
+    
+    projectionMatrix =  np.array([
+            [1, 0, 0, -Width/2],
+            [0, 1, 0, -Height/2],
+            [0, 0, 0, focal_length],
+            [0, 0, -10, 0]])
+    
+    Image3D = cv2.reprojectImageTo3D(depth, projectionMatrix)
+    
+    outputFile = "cloud_01.asc"
+    f = open(outputFile, "w")
+    for x in range(Image3D.shape[0]):
+        for y in range(Image3D.shape[1]):
+            pt = Image3D[x, y]
+            if (math.isinf(pt[0]) or math.isnan(pt[0])):
+                # skip it
+                None
+            else:
+                f.write("%f %f %f %s\n" % (pt[0], pt[1], pt[2] - 1, rgb))
+    f.close()
 
 
 
@@ -162,7 +190,7 @@ test_()
 
 #################### Getting unreal engine origin for change of frame ####################
 unreal_origin = [client.simGetObjectPose('SM_TerminalBlockout_18').position.x_val, client.simGetObjectPose('SM_TerminalBlockout_18').position.y_val]
-print('unreal_origin = ', unreal_origin)
+
 
 
 #################### The starting point of the simulator is the airsim origin ####################
@@ -223,7 +251,10 @@ while(np.sqrt( (vehicle_pose[0]-plan[-1][0])**2 + (vehicle_pose[1]-plan[-1][1])*
     while(np.sqrt( (vehicle_pose[0]-plan[i][0])**2 + (vehicle_pose[1]-plan[i][1])**2) > 10 ):
         car_state = client.getCarState()
         vehicle_pose = [ (client.simGetVehiclePose().position.y_val-unreal_origin[1])+125, (client.simGetVehiclePose().position.x_val-unreal_origin[0])*(-1)+75]
-        # print(vehicle_pose)
+        print('vehicle_pose = ',vehicle_pose)
+        print(plan[i])
+        print(i)
+        
         vehicle_path.append(vehicle_pose)
         
         if car_state.speed > 5:
@@ -238,7 +269,9 @@ while(np.sqrt( (vehicle_pose[0]-plan[-1][0])**2 + (vehicle_pose[1]-plan[-1][1])*
         if (np.sqrt((vehicle_pose[0]-unknown_object_pose[0])**2+(vehicle_pose[1]-unknown_object_pose[1])**2))<25 and switch==0: #
             
             car_heading = proper_angle(client.getCarState().kinematics_estimated.linear_velocity.y_val, -client.getCarState().kinematics_estimated.linear_velocity.x_val)
-               
+            vehicle_pose = [ (client.simGetVehiclePose().position.y_val-unreal_origin[1])+125, (client.simGetVehiclePose().position.x_val-unreal_origin[0])*(-1)+75]
+            vehicle_path.append(vehicle_pose)
+            
             car_controls.brake = 1
             client.setCarControls(car_controls)
             time.sleep(.1)
@@ -266,7 +299,7 @@ while(np.sqrt( (vehicle_pose[0]-plan[-1][0])**2 + (vehicle_pose[1]-plan[-1][1])*
                 
                 vehicle_pose = [ (client.simGetVehiclePose().position.y_val-unreal_origin[1])+125, (client.simGetVehiclePose().position.x_val-unreal_origin[0])*(-1)+75]
                 vehicle_path.append(vehicle_pose)
-                obs_pose = CheckForObstacles(unknown_object_semantics, vehicle_pose)
+                obs_pose = CheckForObstacles(unknown_object_semantics, vehicle_pose, car_heading)
     
                 print('')
                 print('#########################')
@@ -283,7 +316,7 @@ while(np.sqrt( (vehicle_pose[0]-plan[-1][0])**2 + (vehicle_pose[1]-plan[-1][1])*
                 planner2 = RRTStarPlanner(planning_env2)
                 plan = planner2.Plan(start, goal,1, 1)
                 i = 1
-                print(plan)
+                print('new plan check points: ', plan)
                 
                 path_heading = proper_angle(plan[i][0]-plan[i-1][0], (plan[i][1]-plan[i-1][1]) )
                 
@@ -298,8 +331,10 @@ while(np.sqrt( (vehicle_pose[0]-plan[-1][0])**2 + (vehicle_pose[1]-plan[-1][1])*
                     
                     car_heading = proper_angle(client.getCarState().kinematics_estimated.linear_velocity.y_val, -client.getCarState().kinematics_estimated.linear_velocity.x_val)
                     # print('car_heading =' , car_heading)
+                    # print('path_heading = ', path_heading)
                     vehicle_pose = [ (client.simGetVehiclePose().position.y_val-unreal_origin[1])+125, (client.simGetVehiclePose().position.x_val-unreal_origin[0])*(-1)+75]
                     vehicle_path.append(vehicle_pose)
+                    # print('vehicle pose = ', vehicle_pose)
                 print('Done')
                 print('')
                 
