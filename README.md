@@ -139,8 +139,7 @@ Here's a demo of the simulation:
 ## Roadmap
 Please look out for these updates in coming days:
 
-1. updating the vehicle's controller.
-2. successive convexification for path planning.
+1. debugging successive convexification for path planning.
 3. using Bayesian NN to predict accuracy of the estimates.
 
 
